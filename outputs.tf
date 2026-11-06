@@ -2,7 +2,6 @@ locals {
   redshift_route_table_ids = aws_route_table.redshift[*].id
   public_route_table_ids   = aws_route_table.public[*].id
   private_route_table_ids  = aws_route_table.private[*].id
-  reserved_route_table_ids = aws_route_table.reserved[*].id
 }
 
 ################################################################################
@@ -255,18 +254,8 @@ output "reserved_subnets_ipv6_cidr_blocks" {
 }
 
 output "reserved_route_table_ids" {
-  description = "List of IDs of reserved route tables"
-  value       = local.reserved_route_table_ids
-}
-
-output "reserved_nat_gateway_route_ids" {
-  description = "List of IDs of the reserved nat gateway route"
-  value       = aws_route.reserved_nat_gateway[*].id
-}
-
-output "reserved_ipv6_egress_route_ids" {
-  description = "List of IDs of the ipv6 egress route"
-  value       = aws_route.reserved_ipv6_egress[*].id
+  description = "List of IDs of route tables associated with reserved subnets (the private route tables)"
+  value       = local.private_route_table_ids
 }
 
 output "reserved_route_table_association_ids" {

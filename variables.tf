@@ -529,12 +529,6 @@ variable "reserved_subnet_suffix" {
   default     = "reserved"
 }
 
-variable "create_reserved_nat_gateway_route" {
-  description = "Controls if a nat gateway route should be created to give internet access to the reserved subnets"
-  type        = bool
-  default     = true
-}
-
 variable "reserved_subnet_tags" {
   description = "Additional tags for the reserved subnets"
   type        = map(string)
@@ -544,12 +538,6 @@ variable "reserved_subnet_tags" {
 variable "reserved_subnet_tags_per_az" {
   description = "Additional tags for the reserved subnets where the primary key is the AZ"
   type        = map(map(string))
-  default     = {}
-}
-
-variable "reserved_route_table_tags" {
-  description = "Additional tags for the reserved route tables"
-  type        = map(string)
   default     = {}
 }
 
