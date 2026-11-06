@@ -381,6 +381,40 @@ module "wrapper" {
   redshift_subnet_tags                                           = try(each.value.redshift_subnet_tags, var.defaults.redshift_subnet_tags, {})
   redshift_subnets                                               = try(each.value.redshift_subnets, var.defaults.redshift_subnets, [])
   region                                                         = try(each.value.region, var.defaults.region, null)
+  reserved_acl_tags                                              = try(each.value.reserved_acl_tags, var.defaults.reserved_acl_tags, {})
+  reserved_dedicated_network_acl                                 = try(each.value.reserved_dedicated_network_acl, var.defaults.reserved_dedicated_network_acl, false)
+  reserved_inbound_acl_rules = try(each.value.reserved_inbound_acl_rules, var.defaults.reserved_inbound_acl_rules, [
+    {
+      rule_number = 100
+      rule_action = "allow"
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_block  = "0.0.0.0/0"
+    },
+  ])
+  reserved_outbound_acl_rules = try(each.value.reserved_outbound_acl_rules, var.defaults.reserved_outbound_acl_rules, [
+    {
+      rule_number = 100
+      rule_action = "allow"
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_block  = "0.0.0.0/0"
+    },
+  ])
+  reserved_subnet_assign_ipv6_address_on_creation                = try(each.value.reserved_subnet_assign_ipv6_address_on_creation, var.defaults.reserved_subnet_assign_ipv6_address_on_creation, false)
+  reserved_subnet_enable_dns64                                   = try(each.value.reserved_subnet_enable_dns64, var.defaults.reserved_subnet_enable_dns64, true)
+  reserved_subnet_enable_resource_name_dns_a_record_on_launch    = try(each.value.reserved_subnet_enable_resource_name_dns_a_record_on_launch, var.defaults.reserved_subnet_enable_resource_name_dns_a_record_on_launch, false)
+  reserved_subnet_enable_resource_name_dns_aaaa_record_on_launch = try(each.value.reserved_subnet_enable_resource_name_dns_aaaa_record_on_launch, var.defaults.reserved_subnet_enable_resource_name_dns_aaaa_record_on_launch, true)
+  reserved_subnet_ipv6_native                                    = try(each.value.reserved_subnet_ipv6_native, var.defaults.reserved_subnet_ipv6_native, false)
+  reserved_subnet_ipv6_prefixes                                  = try(each.value.reserved_subnet_ipv6_prefixes, var.defaults.reserved_subnet_ipv6_prefixes, [])
+  reserved_subnet_names                                          = try(each.value.reserved_subnet_names, var.defaults.reserved_subnet_names, [])
+  reserved_subnet_private_dns_hostname_type_on_launch            = try(each.value.reserved_subnet_private_dns_hostname_type_on_launch, var.defaults.reserved_subnet_private_dns_hostname_type_on_launch, null)
+  reserved_subnet_suffix                                         = try(each.value.reserved_subnet_suffix, var.defaults.reserved_subnet_suffix, "reserved")
+  reserved_subnet_tags                                           = try(each.value.reserved_subnet_tags, var.defaults.reserved_subnet_tags, {})
+  reserved_subnet_tags_per_az                                    = try(each.value.reserved_subnet_tags_per_az, var.defaults.reserved_subnet_tags_per_az, {})
+  reserved_subnets                                               = try(each.value.reserved_subnets, var.defaults.reserved_subnets, [])
   reuse_nat_ips                                                  = try(each.value.reuse_nat_ips, var.defaults.reuse_nat_ips, false)
   secondary_cidr_blocks                                          = try(each.value.secondary_cidr_blocks, var.defaults.secondary_cidr_blocks, [])
   single_nat_gateway                                             = try(each.value.single_nat_gateway, var.defaults.single_nat_gateway, false)

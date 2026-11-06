@@ -225,6 +225,55 @@ output "private_network_acl_arn" {
 }
 
 ################################################################################
+# Reserved Subnets
+################################################################################
+
+output "reserved_subnet_objects" {
+  description = "A list of all reserved subnets, containing the full objects."
+  value       = aws_subnet.reserved
+}
+
+output "reserved_subnets" {
+  description = "List of IDs of reserved subnets"
+  value       = aws_subnet.reserved[*].id
+}
+
+output "reserved_subnet_arns" {
+  description = "List of ARNs of reserved subnets"
+  value       = aws_subnet.reserved[*].arn
+}
+
+output "reserved_subnets_cidr_blocks" {
+  description = "List of cidr_blocks of reserved subnets"
+  value       = compact(aws_subnet.reserved[*].cidr_block)
+}
+
+output "reserved_subnets_ipv6_cidr_blocks" {
+  description = "List of IPv6 cidr_blocks of reserved subnets in an IPv6 enabled VPC"
+  value       = compact(aws_subnet.reserved[*].ipv6_cidr_block)
+}
+
+output "reserved_route_table_ids" {
+  description = "List of IDs of route tables associated with reserved subnets (the private route tables)"
+  value       = local.private_route_table_ids
+}
+
+output "reserved_route_table_association_ids" {
+  description = "List of IDs of the reserved route table association"
+  value       = aws_route_table_association.reserved[*].id
+}
+
+output "reserved_network_acl_id" {
+  description = "ID of the reserved network ACL"
+  value       = try(aws_network_acl.reserved[0].id, null)
+}
+
+output "reserved_network_acl_arn" {
+  description = "ARN of the reserved network ACL"
+  value       = try(aws_network_acl.reserved[0].arn, null)
+}
+
+################################################################################
 # Outpost Subnets
 ################################################################################
 
