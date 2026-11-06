@@ -564,7 +564,7 @@ variable "reserved_dedicated_network_acl" {
 }
 
 variable "reserved_inbound_acl_rules" {
-  description = "Private subnets inbound network ACLs"
+  description = "Reserved subnets inbound network ACLs"
   type        = list(map(string))
   default = [
     {
@@ -579,7 +579,7 @@ variable "reserved_inbound_acl_rules" {
 }
 
 variable "reserved_outbound_acl_rules" {
-  description = "Private subnets outbound network ACLs"
+  description = "Reserved subnets outbound network ACLs"
   type        = list(map(string))
   default = [
     {
