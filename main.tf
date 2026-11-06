@@ -437,7 +437,7 @@ resource "aws_subnet" "reserved" {
   enable_resource_name_dns_a_record_on_launch    = !var.reserved_subnet_ipv6_native && var.reserved_subnet_enable_resource_name_dns_a_record_on_launch
   ipv6_cidr_block                                = var.enable_ipv6 && length(var.reserved_subnet_ipv6_prefixes) > 0 ? cidrsubnet(aws_vpc.this[0].ipv6_cidr_block, 8, var.reserved_subnet_ipv6_prefixes[count.index]) : null
   ipv6_native                                    = var.enable_ipv6 && var.reserved_subnet_ipv6_native
-  reserved_dns_hostname_type_on_launch           = var.reserved_subnet_reserved_dns_hostname_type_on_launch
+  private_dns_hostname_type_on_launch            = var.private_subnet_private_dns_hostname_type_on_launch
   vpc_id                                         = local.vpc_id
 
   tags = merge(
@@ -1328,6 +1328,16 @@ resource "aws_route" "private_ipv6_egress" {
   egress_only_gateway_id      = element(aws_egress_only_internet_gateway.this[*].id, 0)
 }
 
+resource "aws_route" "reserved_ipv6_egress" {
+  count = local.create_vpc && var.create_egress_only_igw && var.enable_ipv6 && local.len_reserved_subnets > 0 ? local.nat_gateway_count : 0
+
+  region = var.region
+
+  route_table_id              = element(aws_route_table.reserved[*].id, count.index)
+  destination_ipv6_cidr_block = "::/0"
+  egress_only_gateway_id      = element(aws_egress_only_internet_gateway.this[*].id, 0)
+}
+
 ################################################################################
 # NAT Gateway
 ################################################################################
@@ -1406,6 +1416,34 @@ resource "aws_route" "private_dns64_nat_gateway" {
   region = var.region
 
   route_table_id              = element(aws_route_table.private[*].id, count.index)
+  destination_ipv6_cidr_block = "64:ff9b::/96"
+  nat_gateway_id              = element(aws_nat_gateway.this[*].id, count.index)
+
+  timeouts {
+    create = "5m"
+  }
+}
+
+resource "aws_route" "reserved_nat_gateway" {
+  count = local.create_vpc && var.enable_nat_gateway && var.create_reserved_nat_gateway_route ? local.nat_gateway_count : 0
+
+  region = var.region
+
+  route_table_id         = element(aws_route_table.reserved[*].id, count.index)
+  destination_cidr_block = var.nat_gateway_destination_cidr_block
+  nat_gateway_id         = element(aws_nat_gateway.this[*].id, count.index)
+
+  timeouts {
+    create = "5m"
+  }
+}
+
+resource "aws_route" "reserved_dns64_nat_gateway" {
+  count = local.create_vpc && var.enable_nat_gateway && var.enable_ipv6 && (length(var.reserved_subnet_ipv6_prefixes) > 0 || var.reserved_subnet_ipv6_native) && var.reserved_subnet_enable_dns64 ? local.nat_gateway_count : 0
+
+  region = var.region
+
+  route_table_id              = element(aws_route_table.reserved[*].id, count.index)
   destination_ipv6_cidr_block = "64:ff9b::/96"
   nat_gateway_id              = element(aws_nat_gateway.this[*].id, count.index)
 
