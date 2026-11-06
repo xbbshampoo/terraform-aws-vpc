@@ -305,6 +305,7 @@ module "wrapper" {
   private_subnet_tags                                           = try(each.value.private_subnet_tags, var.defaults.private_subnet_tags, {})
   private_subnet_tags_per_az                                    = try(each.value.private_subnet_tags_per_az, var.defaults.private_subnet_tags_per_az, {})
   private_subnets                                               = try(each.value.private_subnets, var.defaults.private_subnets, [])
+  reserved_subnets                                              = try(each.value.reserved_subnets, var.defaults.reserved_subnets, [])
   propagate_intra_route_tables_vgw                              = try(each.value.propagate_intra_route_tables_vgw, var.defaults.propagate_intra_route_tables_vgw, false)
   propagate_private_route_tables_vgw                            = try(each.value.propagate_private_route_tables_vgw, var.defaults.propagate_private_route_tables_vgw, false)
   propagate_public_route_tables_vgw                             = try(each.value.propagate_public_route_tables_vgw, var.defaults.propagate_public_route_tables_vgw, false)
