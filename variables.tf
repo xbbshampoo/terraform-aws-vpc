@@ -554,7 +554,7 @@ variable "reserved_route_table_tags" {
 }
 
 ################################################################################
-# Private Network ACLs
+# Reserved Network ACLs
 ################################################################################
 
 variable "reserved_dedicated_network_acl" {
