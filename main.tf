@@ -83,6 +83,7 @@ resource "aws_vpc_block_public_access_exclusion" "this" {
   subnet_id = try(each.value.exclude_subnet, false) ? lookup(
     {
       private     = aws_subnet.private[*].id,
+      reserved    = aws_subnet.reserved[*].id,
       public      = aws_subnet.public[*].id,
       database    = aws_subnet.database[*].id,
       redshift    = aws_subnet.redshift[*].id,
@@ -437,7 +438,7 @@ resource "aws_subnet" "reserved" {
   enable_resource_name_dns_a_record_on_launch    = !var.reserved_subnet_ipv6_native && var.reserved_subnet_enable_resource_name_dns_a_record_on_launch
   ipv6_cidr_block                                = var.enable_ipv6 && length(var.reserved_subnet_ipv6_prefixes) > 0 ? cidrsubnet(aws_vpc.this[0].ipv6_cidr_block, 8, var.reserved_subnet_ipv6_prefixes[count.index]) : null
   ipv6_native                                    = var.enable_ipv6 && var.reserved_subnet_ipv6_native
-  private_dns_hostname_type_on_launch            = var.private_subnet_private_dns_hostname_type_on_launch
+  private_dns_hostname_type_on_launch            = var.reserved_subnet_private_dns_hostname_type_on_launch
   vpc_id                                         = local.vpc_id
 
   tags = merge(

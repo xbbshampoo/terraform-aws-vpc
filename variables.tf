@@ -511,7 +511,7 @@ variable "reserved_subnet_ipv6_native" {
   default     = false
 }
 
-variable "reserved_subnet_reserved_dns_hostname_type_on_launch" {
+variable "reserved_subnet_private_dns_hostname_type_on_launch" {
   description = "The type of hostnames to assign to instances in the subnet at launch. For IPv6-only subnets, an instance DNS name must be based on the instance ID. For dual-stack and IPv4-only subnets, you can specify whether DNS names use the instance IPv4 address or the instance ID. Valid values: `ip-name`, `resource-name`"
   type        = string
   default     = null
